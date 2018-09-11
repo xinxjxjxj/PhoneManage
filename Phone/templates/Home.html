@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load staticfiles  %}
+<title>测试机管理系统</title>
+<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/jquery.flot.js"></script>  
+<script language="javascript" type="text/javascript" src="/static/jquery.flot.pie.js"></script>  
+<script type="text/javascript">
+$(function () {
+	// data
+	/*var data = [
+		{ label: "Series1",  data: 10},
+		{ label: "Series2",  data: 30},
+		{ label: "Series3",  data: 90},
+		{ label: "Series4",  data: 70},
+		{ label: "Series5",  data: 80},
+		{ label: "Series6",  data: 110}
+	];*/
+	/*var data = [
+		{ label: "Series1",  data: [[1,10]]},
+		{ label: "Series2",  data: [[1,30]]},
+		{ label: "Series3",  data: [[1,90]]},
+		{ label: "Series4",  data: [[1,70]]},
+		{ label: "Series5",  data: [[1,80]]},
+		{ label: "Series6",  data: [[1,0]]}
+	];*/
+	var data = [];
+	var series = Math.floor(Math.random()*10)+1;
+	for( var i = 0; i<series; i++)
+	{
+		data[i] = { label: "Series"+(i+1), data: Math.floor(Math.random()*100)+1 }
+	}
+
+	// DEFAULT
+    $.plot($("#default"), {{data | safe}}, 
+	{
+		series: {
+			pie: { 
+				show: true
+			}
+		}
+	});
+	
+	// GRAPH 1
+	$.plot($("#graph1"), data, 
+	{
+		series: {
+			pie: { 
+				show: true
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 2
+	$.plot($("#graph2"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 1,
+				label: {
+					show: true,
+					radius: 1,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					background: { opacity: 0.8 }
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 3
+	$.plot($("#graph3"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 1,
+				label: {
+					show: true,
+					radius: 3/4,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					background: { opacity: 0.5 }
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 4
+	$.plot($("#graph4"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 1,
+				label: {
+					show: true,
+					radius: 3/4,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					background: { 
+						opacity: 0.5,
+						color: '#000'
+					}
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 5
+	$.plot($("#graph5"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 3/4,
+				label: {
+					show: true,
+					radius: 3/4,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					background: { 
+						opacity: 0.5,
+						color: '#000'
+					}
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 6
+	$.plot($("#graph6"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 1,
+				label: {
+					show: true,
+					radius: 2/3,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					threshold: 0.1
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 7
+	$.plot($("#graph7"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				combine: {
+					color: '#999',
+					threshold: 0.1
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 8
+	$.plot($("#graph8"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius:300,
+				label: {
+					show: true,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					threshold: 0.1
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// GRAPH 9
+	$.plot($("#graph9"), data, 
+	{
+		series: {
+			pie: { 
+				show: true,
+				radius: 1,
+				tilt: 0.5,
+				label: {
+					show: true,
+					radius: 1,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+					background: { opacity: 0.8 }
+				},
+				combine: {
+					color: '#999',
+					threshold: 0.1
+				}
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	// DONUT
+    $.plot($("#donut"), {{data1 | safe}}, 
+	{
+		series: {
+			pie: { 
+				innerRadius: 0.5,
+				show: true
+			}
+		}
+	});
+
+	// INTERACTIVE
+    $.plot($("#interactive"), data, 
+	{
+		series: {
+			pie: { 
+				show: true
+			}
+		},
+		grid: {
+			hoverable: true,
+			clickable: true
+		}
+	});
+	$("#interactive").bind("plothover", pieHover);
+	$("#interactive").bind("plotclick", pieClick);
+
+});
+
+function pieHover(event, pos, obj) 
+{
+	if (!obj)
+                return;
+	percent = parseFloat(obj.series.percent).toFixed(2);
+	$("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
+}
+
+function pieClick(event, pos, obj) 
+{
+	if (!obj)
+                return;
+	percent = parseFloat(obj.series.percent).toFixed(2);
+	alert(''+obj.series.label+': '+percent+'%');
+}
+</script>
+	<style type="text/css">
+		* {
+		  font-family: sans-serif;
+		}
+		
+		body
+		{
+			padding: 0 1em 1em 1em;
+		}
+		
+		div.graph
+		{
+			width: 400px;
+			height: 300px;
+			float: left;
+			border: 1px dashed gainsboro;
+		}
+		
+		label
+		{
+			display: block;
+			margin-left: 400px;
+			padding-left: 1em;
+		}
+		
+		h2
+		{
+			padding-top: 1em;
+			margin-bottom: 0;
+			clear: both;
+			color: #ccc;
+		}
+		
+		code
+		{
+			display: block;
+			background-color: #eee;
+			border: 1px dashed #999;
+			padding: 0.5em;
+			margin: 0.5em;
+			color: #666;
+			font-size: 10pt;
+		}
+		
+		code b
+		{
+			color: black;
+		}
+		
+		ul
+		{
+			font-size: 10pt;
+		}
+		
+		ul li
+		{
+			margin-bottom: 0.5em;
+		}
+		
+		ul.options li
+		{
+			list-style: none;
+			margin-bottom: 1em;
+		}
+		
+		ul li i
+		{
+			color: #999;
+		}
+	</style>
+</head>
+<body role="document">
+<!-- 导航栏-->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container-fluid">
+<div class="navbar-header">
+<a class="navbar-brand" href="{%url 'home'%}">测试机管理系统</a>
+</div>
+<div id="navbar" class="collapse navbar-collapse">
+<ul class="nav navbar-nav">
+<li><a href="{%url 'Android_manage'%}">Android</a></li>
+<li><a href="{%url 'iOS_manage'%}">iOS</a></li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	更多
+	<b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
+	<li><a href="{%url 'history_list'%}">借用历史</a></li>
+	<li><a href="{%url 'export'%}">导出</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/admin/Phone/">你好,{{user}}</a></li>
+{% if user %}
+<li><a href="/logout/">退出</a></li>
+{% endif %}
+</ul>
+</div>
+</div>
+</nav>
+
+
+
+<!---机器借用情况-->
+<div style="padding-top:20px">
+	<h2>机器借用情况</h2>
+	<br>
+	<div id="default" class="graph" style="float:left">&nbsp;Android</div>
+	<div id="donut" class="graph" style="float:left">&nbsp;iOS</div>
+	<!--借用-->
+	<div>
+		<table class="table table-hover">
+		<h2>审批</h2>
+		<thead>
+		<tr>
+			<th>id</th><th>品牌</th><th>设备</th><th>借用人</th><th>状态</th><th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for Phone in Phones %}
+			<form method="post" action="{%url 'borrow'%}">
+			{% csrf_token %}
+			<tr class="">
+			<td><input type="hidden" name="id" value="{{ Phone.id }}"><b>{{ Phone.id }}</b></td>
+			<td><input type="hidden" name="brand" value="{{ Phone.brand }}">{{ Phone.brand }}</td>
+			<td>{{ Phone.name }}</td>
+			<td><input type="hidden" name="ownerinput" value="{{ Phone.applicant }}">{{ Phone.applicant }}</td>
+			<td><img src="/static/admin/img/icon-yes.svg" alt="True"></td>
+			<td><button type="submit" class="btn btn-success">借出</button>  
+			<button type="submit" class="btn btn-warning" formaction="{%url 'reject'%}">拒绝</button>
+			<button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
+			<td></td>
+			</tr>
+			</form>
+		{% endfor %}
+		</tbody>
+				<tbody>
+		{% for Phone1 in iOSapply %}
+			<form method="post" action="{%url 'borrow'%}">
+			{% csrf_token %}
+			<tr class="">
+			<td><input type="hidden" name="id" value="{{ Phone1.id }}"><b>{{ Phone1.id }}</b></td>
+			<td><input type="hidden" name="" value="{{ Phone1.system }}">{{ Phone1.system }}</td>
+			<td>{{ Phone1.name }}</td>
+			<td><input type="hidden" name="ownerinput" value="{{ Phone1.applicant }}">{{ Phone1.applicant }}</td>
+			<td><img src="/static/admin/img/icon-yes.svg" alt="True"></td>
+			<td><button type="submit" class="btn btn-success">借出</button>  
+			<button type="submit" class="btn btn-warning" formaction="{%url 'reject'%}">拒绝</button>
+			<button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
+			<td></td>
+			</tr>
+			</form>
+		{% endfor %}
+		</tbody>
+		</table>
+	</div>
+	<!-- 借用记录-->
+	<div>
+		<table class="table table-hover">
+		<h2>最近</h2>
+		<thead>
+		<tr>
+			<th>借用人</th><th>操作</th><th>设备</th><th>管理员</th><th>时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for list in history_lists %}
+			{% if list.status == True %}
+				<tr class="success">
+				<td>{{ list.owner }}</td>
+				<td>归还</td>
+				<td>{{ list.devicename }}</span></td>
+				<td>{{ list.managername }}</td>
+				<td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
+				</tr>
+			{% else %}	
+				<tr class="danger">
+				<td>{{ list.owner }}</td>
+				<td>借用</td>
+				<td>{{ list.devicename }}</span></td>
+				<td>{{ list.managername }}</td>
+				<td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
+				</tr>
+				{% endif %}
+		{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
+
+
+</body>
+</html>
