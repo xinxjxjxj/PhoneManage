@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Phone',
     'bootstrap3',
-#     'file',
 ]
 
 MIDDLEWARE = [

@@ -7,7 +7,7 @@
 {% bootstrap_javascript %}
 {% load staticfiles  %}
 <title>测试机管理系统</title>
-<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body role="document">
@@ -23,12 +23,12 @@
 <li class="active"><a href="{%url 'iOS_manage'%}">iOS</a></li>
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	更多
-	<b class="caret"></b>
+    更多
+    <b class="caret"></b>
 </a>
 <ul class="dropdown-menu">
-	<li><a href="{%url 'history_list'%}">借用历史</a></li>
-	<li><a href="{%url 'export'%}">导出</a></li>
+    <li><a href="{%url 'history_list'%}">借用历史</a></li>
+    <li><a href="{%url 'export'%}">导出</a></li>
 </ul>
 </li>
 </ul>
@@ -46,26 +46,26 @@
 <!--搜索表单-->
 <div>
 <div>
-<img src="/static/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
+<img src="/static/img/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
 </div>
 <div class="" style="padding-top:120px;padding-left:10px;margin-left:120px">
 <form class="form-inline" method="get" action="{%url 'iOSsearch'%}">
 <div class="form-group">
 <input name="name" type="text" placeholder="型号" class="form-control"  value="{{ name1 }}" list="category1">
-	<datalist id="category1">
-		<option value="4">
-		<option value="5">
-		<option value="6">
-		<option value="7">
-		<option value="8">
-	</datalist>
+    <datalist id="category1">
+        <option value="4">
+        <option value="5">
+        <option value="6">
+        <option value="7">
+        <option value="8">
+    </datalist>
 <input name="version" type="text" placeholder="系统版本" class="form-control"  value="{{ version1 }}" list="category2">
-	<datalist id="category2">
-		<option value="8">
-		<option value="9">
-		<option value="10">
-		<option value="11">
-	</datalist>
+    <datalist id="category2">
+        <option value="8">
+        <option value="9">
+        <option value="10">
+        <option value="11">
+    </datalist>
 </div>
 <button type="submit" class="btn btn-success">{% bootstrap_icon "search" %} 搜索</button>
 <!-- <button type="submit" class="btn btn-success" formaction="{%url 'export'%}">{% bootstrap_icon "floppy-save" %} 导出</button> -->
@@ -84,60 +84,60 @@
 </thead>
 <tbody>
 {% for iOS in iOSs %}
-	{%if iOS.breakdown == 1 %}
-		{% if iOS.status == True %}
-			<form method="post" action="{%url 'borrow'%}">
-			{% csrf_token %}
-			<tr class="">
-			<td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
-			<td>{{ iOS.name }}</td>
-			<td>{{ iOS.version }}</td>
-			<td>{{ iOS.iOS_version }}</td>
-			<td>{{ iOS.Physical_size }}</td>
-			<td><img src="/static/admin/img/icon-yes.svg" alt="True"></td>
-			<td><input name="ownerinput" type="text" class="form-control" style="width:100px" value="{{ iOS.applicant }}"></td>
-			<td><button type="submit" class="btn btn-success">借出</button>  
-			{% if iOS.applicant %}
-			<button type="submit" class="btn btn-warning" formaction="{%url 'reject'%}">拒绝</button>
-			{% endif %}
-			<button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
-			<td></td>
-			</tr>
-			</form>
+    {%if iOS.breakdown == 1 %}
+        {% if iOS.status == True %}
+            <form method="post" action="{%url 'borrow'%}">
+            {% csrf_token %}
+            <tr class="">
+            <td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
+            <td>{{ iOS.name }}</td>
+            <td>{{ iOS.version }}</td>
+            <td>{{ iOS.iOS_version }}</td>
+            <td>{{ iOS.Physical_size }}</td>
+            <td><img src="/static/admin/img/icon-yes.svg" alt="True"></td>
+            <td><input name="ownerinput" type="text" class="form-control" style="width:100px" value="{{ iOS.applicant }}"></td>
+            <td><button type="submit" class="btn btn-success">借出</button>  
+            {% if iOS.applicant %}
+            <button type="submit" class="btn btn-warning" formaction="{%url 'reject'%}">拒绝</button>
+            {% endif %}
+            <button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
+            <td></td>
+            </tr>
+            </form>
 
-		{% else %}	
-			<form method="post" action="{%url 'back'%}">
-			{% csrf_token %}
-			<tr class="">
-			<td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
-			<td>{{ iOS.name }}</td>
-			<td>{{ iOS.version }}</td>
-			<td>{{ iOS.iOS_version }}</td>
-			<td>{{ iOS.Physical_size }}</td>
-			<td><img src="/static/admin/img/icon-no.svg" alt="False"></td>
-			<td>{{ iOS.owner }}</td>
-			<td><button type="submit" class="btn btn-primary">归还</button>
-			<button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
-			<td>{{ iOS.modifiedtime|date:"Y-m-d H:i:s" }}</td>
-			</tr>
-			</form>
-			{% endif %}
-	{%else%}
-		<form method="post" action="{%url 'repair'%}">
-		{% csrf_token %}
-		<tr class="">
-		<td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
-		<td>{{ iOS.name }}</td>
-		<td>{{ iOS.version }}</td>
-		<td>{{ iOS.iOS_version }}</td>
-		<td>{{ iOS.Physical_size }}</td>
-		<td>已损坏</td>
-		<td></td>
-		<td><button type="submit" class="btn btn-info">修复</button></td></td>
-		<td></td>
-		</tr>
-		</form>
-	{%endif%}
+        {% else %}    
+            <form method="post" action="{%url 'back'%}">
+            {% csrf_token %}
+            <tr class="">
+            <td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
+            <td>{{ iOS.name }}</td>
+            <td>{{ iOS.version }}</td>
+            <td>{{ iOS.iOS_version }}</td>
+            <td>{{ iOS.Physical_size }}</td>
+            <td><img src="/static/admin/img/icon-no.svg" alt="False"></td>
+            <td>{{ iOS.owner }}</td>
+            <td><button type="submit" class="btn btn-primary">归还</button>
+            <button type="submit" class="btn btn-danger" formaction="{%url 'breakdown'%}">报修</button></td>
+            <td>{{ iOS.modifiedtime|date:"Y-m-d H:i:s" }}</td>
+            </tr>
+            </form>
+            {% endif %}
+    {%else%}
+        <form method="post" action="{%url 'repair'%}">
+        {% csrf_token %}
+        <tr class="">
+        <td><input type="hidden" name="id" value="{{ iOS.id }}">&nbsp;&nbsp;<b>{{ iOS.id }}</b></td>
+        <td>{{ iOS.name }}</td>
+        <td>{{ iOS.version }}</td>
+        <td>{{ iOS.iOS_version }}</td>
+        <td>{{ iOS.Physical_size }}</td>
+        <td>已损坏</td>
+        <td></td>
+        <td><button type="submit" class="btn btn-info">修复</button></td></td>
+        <td></td>
+        </tr>
+        </form>
+    {%endif%}
 {% endfor %}
 </tbody>
 </table>
@@ -147,11 +147,11 @@
 <div class="container">
   <ul class="pager">
   {% if iOSs.has_previous %}
-	<li><a href="?page={{ iOSs.previous_page_number }}">上一页</a></li>
-	{% endif %}
-	{% if iOSs.has_next %}
+    <li><a href="?page={{ iOSs.previous_page_number }}">上一页</a></li>
+    {% endif %}
+    {% if iOSs.has_next %}
     <li><a href="?page={{ iOSs.next_page_number }}">下一页</a></li>
-	{% endif %}
+    {% endif %}
   </ul>
 </div>
 </body>

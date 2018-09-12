@@ -7,7 +7,7 @@
 {% bootstrap_javascript %}
 {% load staticfiles  %}
 <title>测试机管理系统</title>
-<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
 
@@ -25,12 +25,12 @@
 <li><a href="{%url 'iOS_manage'%}">iOS</a></li>
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	更多
-	<b class="caret"></b>
+    更多
+    <b class="caret"></b>
 </a>
 <ul class="dropdown-menu">
-	<li><a href="{%url 'history_list'%}">借用历史</a></li>
-	<li><a href="{%url 'export'%}">导出</a></li>
+    <li><a href="{%url 'history_list'%}">借用历史</a></li>
+    <li><a href="{%url 'export'%}">导出</a></li>
 </ul>
 </li>
 </ul>
@@ -49,8 +49,8 @@
 <!--搜索-->
 <div>
 <div>
-<img src="/static/android.jpg" class="img-responsive" alt="Android" style="padding-top:60px;padding-left:10px;width:100px;float:left">
-<img src="/static/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
+<img src="/static/img/android.jpg" class="img-responsive" alt="Android" style="padding-top:60px;padding-left:10px;width:100px;float:left">
+<img src="/static/img/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
 </div>
 <div class="" style="padding-top:120px;padding-left:10px;margin-left:120px">
 <form class="navbar-form" method="get" action="{%url 'historysearch'%}">
@@ -69,30 +69,30 @@
 <table class="table table-hover">
 <thead>
 <tr>
-	<th>编号</th><th>借用人</th><th>操作</th><th>设备</th><th>管理员</th><th>时间</th>
+    <th>编号</th><th>借用人</th><th>操作</th><th>设备</th><th>管理员</th><th>时间</th>
 </tr>
 </thead>
 <tbody>
 {% for list in history_lists %}
-	{% if list.status == True %}
-		<tr class="success">
-		<td>&nbsp;&nbsp;{{ list.id }}</td>
-		<td>{{ list.owner }}</td>
-		<td>归还</td>
-		<td>{{ list.devicename }}</span></td>
-		<td>{{ list.managername }}</td>
-		<td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
-		</tr>
-	{% else %}	
-		<tr class="danger">
-		<td>&nbsp;&nbsp;{{ list.id }}</td>
-		<td>{{ list.owner }}</td>
-		<td>借用</td>
-		<td>{{ list.devicename }}</span></td>
-		<td>{{ list.managername }}</td>
-		<td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
-		</tr>
-		{% endif %}
+    {% if list.status == True %}
+        <tr class="success">
+        <td>&nbsp;&nbsp;{{ list.id }}</td>
+        <td>{{ list.owner }}</td>
+        <td>归还</td>
+        <td>{{ list.devicename }}</span></td>
+        <td>{{ list.managername }}</td>
+        <td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
+        </tr>
+    {% else %}    
+        <tr class="danger">
+        <td>&nbsp;&nbsp;{{ list.id }}</td>
+        <td>{{ list.owner }}</td>
+        <td>借用</td>
+        <td>{{ list.devicename }}</span></td>
+        <td>{{ list.managername }}</td>
+        <td>{{ list.modifiedtime|date:"Y-m-d H:i:s" }}</td>
+        </tr>
+        {% endif %}
 {% endfor %}
 </tbody>
 </table>
@@ -103,36 +103,36 @@
 <div class="container">
   <ul class="pager">
   {% if history_lists.has_previous %}
-	<li><a href="?page={{ history_lists.previous_page_number }}">上一页</a></li>
-	{% endif %}
-	<span class="current">
-	当前 {{ history_lists.number }} / {{ history_lists.paginator.num_pages }}页
-	</span>
-	{% if history_lists.has_next %}
+    <li><a href="?page={{ history_lists.previous_page_number }}">上一页</a></li>
+    {% endif %}
+    <span class="current">
+    当前 {{ history_lists.number }} / {{ history_lists.paginator.num_pages }}页
+    </span>
+    {% if history_lists.has_next %}
     <li><a href="?page={{ history_lists.next_page_number }}">下一页</a></li>
-	{% endif %}
+    {% endif %}
   </ul>
 </div>
 
 <!-- <div style="margin-left:70%;"
 
 <div class="pagination">
-	<span class="step-links">
-	{% if Androids.has_previous %}
-	<a href="?page={{ Androids.previous_page_number }}">上一页</a>
-	{% else %}
-	上一页
-	{% endif %}
-	<span class="current">
-	当前 {{ Androids.number }} / {{ Androids.paginator.num_pages }}页
-	</span>
-	{% if Androids.has_next %}
-	<a href="?page={{ Androids.next_page_number }}">下一页</a>
-	{% else %}
-	下一页
-	{% endif %}
-	</span>
-	</div> -->
+    <span class="step-links">
+    {% if Androids.has_previous %}
+    <a href="?page={{ Androids.previous_page_number }}">上一页</a>
+    {% else %}
+    上一页
+    {% endif %}
+    <span class="current">
+    当前 {{ Androids.number }} / {{ Androids.paginator.num_pages }}页
+    </span>
+    {% if Androids.has_next %}
+    <a href="?page={{ Androids.next_page_number }}">下一页</a>
+    {% else %}
+    下一页
+    {% endif %}
+    </span>
+    </div> -->
 </div>
 </body>
 </html>

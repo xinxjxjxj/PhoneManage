@@ -16,8 +16,7 @@ def index(request):
     if username:
         return HttpResponseRedirect('/home/')
     else:
-        return render(request, 'index2.html')
-#         return HttpResponseRedirect('/Android_list/')
+        return render(request, 'index.html')
 
 def login(request):
     username = request.session.get('user', '')
@@ -38,14 +37,12 @@ def login_action(request):
             response = HttpResponseRedirect('/home/')
             return response
         else:
-            return render(request, "index2.html", {'error':'账号或密码错误！'})
+            return render(request, "index.html", {'error':'账号或密码错误！'})
  
 # 未登录返回安卓设备列表，提供申请和取消申请
 def Android_list(request):
 #     返回搜索栏下拉菜单值
-    #return render(request,"Android_manage1.html") 
     agent = request.META.get('HTTP_USER_AGENT','')
-    #print agent
     brands_list = Android.objects.values('brand').distinct()
     sizes_list = Android.objects.values('Physical_size').distinct()
     Androids = Android.objects.all().order_by('-breakdown')
@@ -338,7 +335,7 @@ def home(request):
     data = [{ "label": "Borrowed",  "data": Android_Borrowed_count},{ "label": "Available",  "data": Android_Available_count},{ "label": "Broken",  "data": Android_broken}]
     data1 = [{ "label": "Borrowed",  "data": iOS_Borrowed_count},{ "label": "Available",  "data": iOS_Available_count},{ "label": "Broken",  "data": iOS_broken}]
     context = {"data":data,"data1":data1,"user":username, "history_lists":history_lists,"Phones":Phones,"iOSapply":iOSapply}
-    return render(request, "Home.html", context)
+    return render(request, "home1.html", context)
 
 #  退出登录   
 def logout(request):
