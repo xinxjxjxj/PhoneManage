@@ -130,7 +130,7 @@ def search_name(request):
     search_version = request.GET.get('version','')
     search_size = request.GET.get('size','')
     brands_list = Android.objects.values('brand').distinct()
-    Androids = Android.objects.filter(brand__contains=search_brand,Android_version__contains=search_version,Physical_size__contains=search_size)
+    Androids = Android.objects.filter(brand__contains=search_brand,Android_version__contains=search_version,Physical_size__contains=search_size).order_by('-breakdown')
     context = {"user":username,"Androids":Androids,"brand1":search_brand,"version1":search_version,"size1":search_size, "brands_list":brands_list}
     if username :
         return render(request, "Android_manage.html", context)
@@ -141,7 +141,7 @@ def search_name1(request):
     username = request.session.get('user', '')
     search_name = request.GET.get('name','')
     search_version = request.GET.get('version','')
-    iOSs = iOS.objects.filter(name__contains=search_name,iOS_version__contains=search_version)
+    iOSs = iOS.objects.filter(name__contains=search_name,iOS_version__contains=search_version).order_by('-breakdown')
     context = {"user":username,"iOSs":iOSs, 'name1':search_name, 'version1':search_version}
     if username:
         return render(request, "iOS_manage.html", context)
@@ -300,14 +300,18 @@ def export(request):
     iOSs = iOS.objects.all()
     time1 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     writer = csv.writer(response)
-    writer.writerow(['测试机清单',time1])
-    writer.writerow(['编号', '品牌','型号','系统版本','屏幕分辨率','资产编号','状态','借用人'])
+    writer.writerow(['测试机清单','日期：'+time1])
+    writer.writerow(['编号', '品牌','型号','系统版本','屏幕分辨率','资产编号','状态','借用人','借用历史'])
     for iOS1 in iOSs:
         iosname = iOS1.name.encode('utf-8') + ' ' + iOS1.version.encode('utf-8')
-        writer.writerow([iOS1.id, '苹果',iosname,iOS1.iOS_version.encode('utf-8'),iOS1.Physical_size.encode('utf-8'),iOS1.assetnum.encode('utf-8'),'',iOS1.owner.encode('utf-8')])
+        borrownameslist = [borrowname.owner for borrowname in borrowHistory.objects.filter(devicename=iOS1.name,status='1').order_by("-id")]
+        borrownames = ','.join(borrownameslist)
+        writer.writerow([iOS1.id, '苹果',iosname,iOS1.iOS_version.encode('utf-8'),iOS1.Physical_size.encode('utf-8'),iOS1.assetnum.encode('utf-8'),'',iOS1.owner.encode('utf-8'),borrownames.encode('utf-8')])
     
     for Android1 in Androids:
-        writer.writerow([Android1.id+len(iOSs), Android1.brand.encode('utf-8'),Android1.name.encode('utf-8'),Android1.Android_version.encode('utf-8'),Android1.Physical_size.encode('utf-8'),Android1.assetnum.encode('utf-8'),'',Android1.owner.encode('utf-8')])
+        borrownameslist = [borrowname.owner for borrowname in borrowHistory.objects.filter(devicename=Android1.name,status='1').order_by("-id")]
+        borrownames = ','.join(borrownameslist)
+        writer.writerow([Android1.id+len(iOSs), Android1.brand.encode('utf-8'),Android1.name.encode('utf-8'),Android1.Android_version.encode('utf-8'),Android1.Physical_size.encode('utf-8'),Android1.assetnum.encode('utf-8'),'',Android1.owner.encode('utf-8'),borrownames.encode('utf-8')])
     return response
 
 def home(request):
@@ -335,7 +339,7 @@ def home(request):
     data = [{ "label": "Borrowed",  "data": Android_Borrowed_count},{ "label": "Available",  "data": Android_Available_count},{ "label": "Broken",  "data": Android_broken}]
     data1 = [{ "label": "Borrowed",  "data": iOS_Borrowed_count},{ "label": "Available",  "data": iOS_Available_count},{ "label": "Broken",  "data": iOS_broken}]
     context = {"data":data,"data1":data1,"user":username, "history_lists":history_lists,"Phones":Phones,"iOSapply":iOSapply}
-    return render(request, "home1.html", context)
+    return render(request, "home.html", context)
 
 #  退出登录   
 def logout(request):

@@ -7,6 +7,12 @@
     {% bootstrap_javascript %}
     {% load staticfiles  %}
     <title>测试机管理系统</title>
+	    <!-- 页面的宽度与设备屏幕的宽度一致 -->
+    <meta name="viewport" content="width=device-width">
+    <!-- 初始缩放比例 1:1,没有横线滚动的效果 -->
+    <meta name="viewport" content="initial-scale=1">
+    <!-- 禁止用户缩放 -->
+    <meta name="viewport" content="user-scalable=no">
     <script src="/static/js/jquery-3.3.1.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 </head>
@@ -79,10 +85,8 @@
 
 
 <!-- Android列表-->
-<div class="row" style="padding-top: 10px;padding-left:20px">
-<div class="table-responsive"">
-<table class="table table-hover">
-
+<div class="row" style="padding-top: 10px;padding-left:20px;margin-left:0px;margin-right:0px;">
+<table class="table table-hover table-condensed">
 <thead>
 <tr>
     <th>编号</th><th>品牌</th><th>型号</th><th>系统版本</th><th>屏幕分辨率</th><th>状态</th><th>借用人</th><th>操作</th><th>借用时间</th>
@@ -146,7 +150,6 @@
 {% endfor %}
 </tbody>
 </table>
-</div>
 </div>
 
 
