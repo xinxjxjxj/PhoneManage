@@ -314,21 +314,21 @@ def export(request):
         writer.writerow([Android1.id+len(iOSs), Android1.brand.encode('utf-8'),Android1.name.encode('utf-8'),Android1.Android_version.encode('utf-8'),Android1.Physical_size.encode('utf-8'),Android1.assetnum.encode('utf-8'),'',Android1.owner.encode('utf-8'),borrownames.encode('utf-8')])
     return response
 
+@login_required 
 def home(request):
-    history_lists = borrowHistory.objects.all().order_by("-id")[:5]
+    history_lists = borrowHistory.objects.all().order_by("-id")[:10]
     Android_Borrowed_count = Android.objects.filter(status=0,breakdown='1').count()
     Android_Available_count = Android.objects.filter(status=1,breakdown='1').count()
     Android_broken = Android.objects.filter(breakdown='0').count()
+    Android_count = Android.objects.count()
     iOS_Borrowed_count = iOS.objects.filter(status=0,breakdown='1').count()
     iOS_Available_count = iOS.objects.filter(status=1,breakdown='1').count()
     iOS_broken = iOS.objects.filter(breakdown='0').count()
+    iOS_count = iOS.objects.count()
     Phones = Android.objects.exclude(applicant="")
-    print Phones
     iOSapply = iOS.objects.exclude(applicant="")
-    print iOSapply
     paginator = Paginator(history_lists,20)
     page = request.GET.get('page')
-    print paginator
     try:
         history_lists = paginator.page(page)
     except PageNotAnInteger:
@@ -336,8 +336,8 @@ def home(request):
     except EmptyPage:
         history_lists = paginator.page(paginator.num_pages)
     username = request.session.get('user', '')
-    data = [{ "label": "Borrowed",  "data": Android_Borrowed_count},{ "label": "Available",  "data": Android_Available_count},{ "label": "Broken",  "data": Android_broken}]
-    data1 = [{ "label": "Borrowed",  "data": iOS_Borrowed_count},{ "label": "Available",  "data": iOS_Available_count},{ "label": "Broken",  "data": iOS_broken}]
+    data = {"Android_Available_rate":Android_Available_count*100/Android_count,"Android_Borrowed_rate":Android_Borrowed_count*100/Android_count,"Android_broken_rate":100-Android_Available_count*100/Android_count-Android_Borrowed_count*100/Android_count,"Android_count":Android_count,"Android_Borrowed_count":Android_Borrowed_count,"Android_broken":Android_broken}
+    data1 = {"iOS_Available_rate":iOS_Available_count*100/iOS_count,"iOS_Borrowed_rate":iOS_Borrowed_count*100/iOS_count,"iOS_broken_rate":100-iOS_Available_count*100/iOS_count-iOS_Borrowed_count*100/iOS_count,"iOS_count":iOS_count,"iOS_Borrowed_count":iOS_Borrowed_count,"iOS_broken":iOS_broken}
     context = {"data":data,"data1":data1,"user":username, "history_lists":history_lists,"Phones":Phones,"iOSapply":iOSapply}
     return render(request, "home.html", context)
 
