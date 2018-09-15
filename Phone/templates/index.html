@@ -19,11 +19,11 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="请输入密码" required>
         <p style="color:red;text-align:center;">{{error}}</p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">登 录</button>
         {% csrf_token %}
       </form>
       <form action="/Android_list/" method="post">
-        <button class="btn btn-lg btn-info btn-block" type="submit" style="max-width: 330px;margin: 10px auto;padding: 10px;">直接访问</button>
+        <button class="btn btn-lg btn-warning btn-block" type="submit" style="max-width: 330px;margin: 10px auto;padding: 10px;">直接访问</button>
         {% csrf_token %}
         </form>
     </div>

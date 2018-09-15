@@ -35,8 +35,9 @@
 <img src="/static/img/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
 </div>
 <div class="" style="padding-top:120px;padding-left:10px;margin-left:120px">
-<form class="form-inline" method="get" action="{%url 'iOSsearch'%}">
+<form class="form-inline" method="get" action="{%url 'search'%}">
 <div class="form-group">
+<input type="hidden" name="id" value="iOS_list">
 <input name="name" type="text" placeholder="型号" class="form-control"  value="{{ name1 }}" list="category1">
     <datalist id="category1">
         <option value="4">
@@ -61,7 +62,7 @@
 <!-- iOS列表-->
 <div class="row" style="padding-top: 10px;padding-left:20px;">
 <div class="table-responsive"">
-<table class="table table-hover">
+<table class="table table-hover table-condensed">
 <thead>
 <tr>
 <th>编号</th><th>型号</th><th>版本</th><th>系统版本</th><th>屏幕分辨率</th><th>状态</th><th>借用人</th><th>操作</th><th>借用时间</th>

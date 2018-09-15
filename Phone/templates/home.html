@@ -96,7 +96,7 @@
 </div>
 </div>
     <!--借用-->
-	{% if Phones %}
+	{% if Phones or iOSapply %}
 
 	        <h2>审批</h2>
     <div style="padding-left:30px">
@@ -109,7 +109,7 @@
         </thead>
         <tbody>
         {% for Phone in Phones %}
-            <form method="post" action="{%url 'borrow'%}">
+            <form method="post" action="{%url 'homeborrow'%}">
             {% csrf_token %}
             <tr class="">
             <td><input type="hidden" name="id" value="{{ Phone.id }}"><b>{{ Phone.id }}</b></td>
@@ -127,7 +127,7 @@
         </tbody>
                 <tbody>
         {% for Phone1 in iOSapply %}
-            <form method="post" action="{%url 'borrow'%}">
+            <form method="post" action="{%url 'homeborrow'%}">
             {% csrf_token %}
             <tr class="">
             <td><input type="hidden" name="id" value="{{ Phone1.id }}"><b>{{ Phone1.id }}</b></td>

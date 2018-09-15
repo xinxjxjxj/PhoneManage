@@ -53,8 +53,9 @@
 <img src="/static/img/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
 </div>
 <div class="" style="padding-top:120px;padding-left:10px;margin-left:120px">
-<form class="navbar-form" method="get" action="{%url 'historysearch'%}">
+<form class="navbar-form" method="get" action="{%url 'search'%}">
 <div class="form-group">
+<input type="hidden" name="id" value="history_list">
 <input name="owner" type="text" placeholder="借用人" class="form-control" value="{{ owner }}">
 <input name="name" type="text" placeholder="设备" class="form-control" value="{{ name }}">
 </div>

@@ -93,7 +93,6 @@ def history_list(request):
 #    管理员登录，提供借出和归还操作
 @login_required        
 def Android_manage(request):
-    #return render(request,"Android_manage2.html")
     brands_list = Android.objects.values('brand').distinct()
     sizes_list = Android.objects.values('Physical_size').distinct()
     Androids = Android.objects.all().order_by('-breakdown')
@@ -124,38 +123,34 @@ def iOS_manage(request):
     return render(request,"iOS_manage.html",{"user":username, "iOSs":iOSs})
  
 #    搜索 
-def search_name(request):
+def search(request):
     username = request.session.get('user', '')
+    search_id = request.GET.get('id', '')
     search_brand = request.GET.get('brand', '')
     search_version = request.GET.get('version','')
     search_size = request.GET.get('size','')
-    brands_list = Android.objects.values('brand').distinct()
-    Androids = Android.objects.filter(brand__contains=search_brand,Android_version__contains=search_version,Physical_size__contains=search_size).order_by('-breakdown')
-    context = {"user":username,"Androids":Androids,"brand1":search_brand,"version1":search_version,"size1":search_size, "brands_list":brands_list}
-    if username :
-        return render(request, "Android_manage.html", context)
-    else:
-        return render(request, "Android_list.html", context)
-
-def search_name1(request):
-    username = request.session.get('user', '')
     search_name = request.GET.get('name','')
-    search_version = request.GET.get('version','')
-    iOSs = iOS.objects.filter(name__contains=search_name,iOS_version__contains=search_version).order_by('-breakdown')
-    context = {"user":username,"iOSs":iOSs, 'name1':search_name, 'version1':search_version}
-    if username:
-        return render(request, "iOS_manage.html", context)
-    else:
-        return render(request, "iOS_list.html", context)
-
-def historysearch(request):
-    username = request.session.get('user', '')
-    search_name = request.GET.get('name', '')
     search_owner = request.GET.get('owner','')
-    history_lists = borrowHistory.objects.filter(devicename__contains=search_name,owner__contains=search_owner).order_by("-modifiedtime")
-    context = {"user":username,'history_lists':history_lists, 'name':search_name, 'owner':search_owner}
-    return render(request, "history_list.html", context)
-
+    if "Android" in search_id:
+        brands_list = Android.objects.values('brand').distinct()
+        Androids = Android.objects.filter(brand__contains=search_brand,Android_version__contains=search_version,Physical_size__contains=search_size).order_by('-breakdown')
+        context = {"user":username,"Androids":Androids,"brand1":search_brand,"version1":search_version,"size1":search_size, "brands_list":brands_list}
+        if username :
+            return render(request, "Android_manage.html", context)
+        else:
+            return render(request, "Android_list.html", context)
+    elif "iOS" in search_id:
+        iOSs = iOS.objects.filter(name__contains=search_name,iOS_version__contains=search_version).order_by('-breakdown')
+        context = {"user":username,"iOSs":iOSs, 'name1':search_name, 'version1':search_version}
+        if username:
+            return render(request, "iOS_manage.html", context)
+        else:
+            return render(request, "iOS_list.html", context)
+    elif "history" in search_id:
+        history_lists = borrowHistory.objects.filter(devicename__contains=search_name,owner__contains=search_owner).order_by("-modifiedtime")
+        context = {"user":username,'history_lists':history_lists, 'name':search_name, 'owner':search_owner}
+        return render(request, "history_list.html", context)
+    
 # 管理员借出
 @login_required     
 def borrow(request): 
@@ -163,49 +158,39 @@ def borrow(request):
     input_id = request.POST.get('id','')
     input_name = request.POST.get('ownerinput','')
     input_brand = request.POST.get('brand','')
-    if input_brand:
-        if input_name:
-            android = Android.objects.get(id=input_id)
-            android.owner=input_name
-            android.status='0'
-            android.applicant=''
-            android.save()
-            #新增操作记录
-            borrowHistory.objects.create(devicename=android.name,owner=input_name,managername=username,status='0')
-        return HttpResponseRedirect('/Android_manage/') 
-    else:
-        if input_name:
-            ios = iOS.objects.get(id=input_id)
-            ios.owner=input_name
-            ios.status='0'
-            ios.applicant=''
-            ios.save()
-            borrowHistory.objects.create(devicename=ios.name,owner=input_name,managername=username,status='0')
-        return HttpResponseRedirect('/iOS_manage/') 
+    if input_name:
+        if input_brand:
+            borrow = Android.objects.get(id=input_id)
+        else:
+            borrow = iOS.objects.get(id=input_id)
+        borrow.owner=input_name
+        borrow.status='0'
+        borrow.applicant=''
+        borrow.save()
+        #新增操作记录
+        borrowHistory.objects.create(devicename=borrow.name,owner=input_name,managername=username,status='0')
+        if input_brand:
+            return HttpResponseRedirect('/Android_manage/') 
+        else:
+            return HttpResponseRedirect('/iOS_manage/') 
 
+@login_required  
 def homeborrow(request): 
     username = request.session.get('user', '')
     input_id = request.POST.get('id','')
     input_name = request.POST.get('ownerinput','')
     input_brand = request.POST.get('brand','')
-    if input_brand:
-        if input_name:
-            android = Android.objects.get(id=input_id)
-            android.owner=input_name
-            android.status='0'
-            android.applicant=''
-            android.save()
-            #新增操作记录
-            borrowHistory.objects.create(devicename=android.name,owner=input_name,managername=username,status='0')
-        return HttpResponseRedirect('/home/') 
-    else:
-        if input_name:
-            ios = iOS.objects.get(id=input_id)
-            ios.owner=input_name
-            ios.status='0'
-            ios.applicant=''
-            ios.save()
-            borrowHistory.objects.create(devicename=ios.name,owner=input_name,managername=username,status='0')
+    if input_name:
+        if input_brand:
+            borrow = Android.objects.get(id=input_id)
+        else:
+            borrow = iOS.objects.get(id=input_id)
+        borrow.owner=input_name
+        borrow.status='0'
+        borrow.applicant=''
+        borrow.save()
+        #新增操作记录
+        borrowHistory.objects.create(devicename=borrow.name,owner=input_name,managername=username,status='0')
         return HttpResponseRedirect('/home/') 
 
 # 管理员拒绝    
@@ -305,8 +290,8 @@ def export(request):
     for iOS1 in iOSs:
         iosname = iOS1.name.encode('utf-8') + ' ' + iOS1.version.encode('utf-8')
         borrownameslist = [borrowname.owner for borrowname in borrowHistory.objects.filter(devicename=iOS1.name,status='1').order_by("-id")]
-        borrownames = ','.join(borrownameslist)
-        writer.writerow([iOS1.id, '苹果',iosname,iOS1.iOS_version.encode('utf-8'),iOS1.Physical_size.encode('utf-8'),iOS1.assetnum.encode('utf-8'),'',iOS1.owner.encode('utf-8'),borrownames.encode('utf-8')])
+        borrownames = ','.join(borrownameslist).encode('utf-8')
+        writer.writerow([iOS1.id, '苹果',iosname,iOS1.iOS_version.encode('utf-8'),iOS1.Physical_size.encode('utf-8'),iOS1.assetnum.encode('utf-8'),'',iOS1.owner.encode('utf-8'),borrownames])
     
     for Android1 in Androids:
         borrownameslist = [borrowname.owner for borrowname in borrowHistory.objects.filter(devicename=Android1.name,status='1').order_by("-id")]
@@ -327,6 +312,8 @@ def home(request):
     iOS_count = iOS.objects.count()
     Phones = Android.objects.exclude(applicant="")
     iOSapply = iOS.objects.exclude(applicant="")
+    data = {}
+    data1 = {}
     paginator = Paginator(history_lists,20)
     page = request.GET.get('page')
     try:
@@ -336,8 +323,10 @@ def home(request):
     except EmptyPage:
         history_lists = paginator.page(paginator.num_pages)
     username = request.session.get('user', '')
-    data = {"Android_Available_rate":Android_Available_count*100/Android_count,"Android_Borrowed_rate":Android_Borrowed_count*100/Android_count,"Android_broken_rate":100-Android_Available_count*100/Android_count-Android_Borrowed_count*100/Android_count,"Android_count":Android_count,"Android_Borrowed_count":Android_Borrowed_count,"Android_broken":Android_broken}
-    data1 = {"iOS_Available_rate":iOS_Available_count*100/iOS_count,"iOS_Borrowed_rate":iOS_Borrowed_count*100/iOS_count,"iOS_broken_rate":100-iOS_Available_count*100/iOS_count-iOS_Borrowed_count*100/iOS_count,"iOS_count":iOS_count,"iOS_Borrowed_count":iOS_Borrowed_count,"iOS_broken":iOS_broken}
+    if Android_count >0:
+        data = {"Android_Available_rate":Android_Available_count*100/Android_count,"Android_Borrowed_rate":Android_Borrowed_count*100/Android_count,"Android_broken_rate":100-Android_Available_count*100/Android_count-Android_Borrowed_count*100/Android_count,"Android_count":Android_count,"Android_Borrowed_count":Android_Borrowed_count,"Android_broken":Android_broken}
+    if iOS_count >0:
+        data1 = {"iOS_Available_rate":iOS_Available_count*100/iOS_count,"iOS_Borrowed_rate":iOS_Borrowed_count*100/iOS_count,"iOS_broken_rate":100-iOS_Available_count*100/iOS_count-iOS_Borrowed_count*100/iOS_count,"iOS_count":iOS_count,"iOS_Borrowed_count":iOS_Borrowed_count,"iOS_broken":iOS_broken}
     context = {"data":data,"data1":data1,"user":username, "history_lists":history_lists,"Phones":Phones,"iOSapply":iOSapply}
     return render(request, "home.html", context)
 

@@ -49,8 +49,9 @@
 <img src="/static/img/ios.jpg" class="img-responsive" alt="iOS" style="padding-top:60px;padding-left:10px;width:100px;float:left">
 </div>
 <div class="" style="padding-top:120px;padding-left:10px;margin-left:120px">
-<form class="form-inline" method="get" action="{%url 'iOSsearch'%}">
+<form class="form-inline" method="get" action="{%url 'search'%}">
 <div class="form-group">
+<input type="hidden" name="id" value="iOS_manage">
 <input name="name" type="text" placeholder="型号" class="form-control"  value="{{ name1 }}" list="category1">
     <datalist id="category1">
         <option value="4">
