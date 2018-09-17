@@ -51,9 +51,9 @@
     </nav>
 
 <!---机器借用情况-->
-<div style="padding-top:60px">
+<div style="padding-top:60px;padding-left:10px">
     <h2>机器借用情况</h2>
-	<div style="padding-left:30px;padding-right:50px">
+	<div style="padding-left:20px;padding-right:50px">
     <span>Android:共{{data.Android_count}}台,借出{{data.Android_Borrowed_count}}台,损坏{{data.Android_broken}}台</span>
     <div class="progress">
 
@@ -97,9 +97,9 @@
 </div>
     <!--借用-->
 	{% if Phones or iOSapply %}
-
+	<div style="padding-left:10px">
 	        <h2>审批</h2>
-    <div style="padding-left:30px">
+    <div style="padding-left:20px;padding-right:10px">
         <table class="table table-hover table-condensed">
 
         <thead>
@@ -145,10 +145,12 @@
         </tbody>
         </table>
     </div>
+</div>
 {% endif %}
     <!-- 借用记录-->
+		<div style="padding-left:10px">
 	        <h2>最近</h2>
-    <div style="padding-left:30px">
+    <div style="padding-left:20px;padding-right:10px">
         <table class="table table-hover table-condensed">
 
         <thead>
